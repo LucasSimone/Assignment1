@@ -1,5 +1,6 @@
 package application;
 	
+//Imports
 import java.util.Random;
 
 import javafx.application.Application;
@@ -12,6 +13,8 @@ import javafx.scene.text.Text;
 
 
 public class Main extends Application {
+	//Variable Decleration
+	//Initialize the 3 points on the perimiter
 	private Circle circle = new Circle(360, 250, 150);
 	double x = genDoub();
 	private Circle point1 = new Circle(360+150*Math.cos(x), 250+150*Math.sin(x), 12);
@@ -56,36 +59,44 @@ public class Main extends Application {
 	    primaryStage.setScene(scene); // Place the scene in the stage
 	    primaryStage.show(); // Display the stage
 		
+	    //If point a is moved
 		point1.setOnMouseDragged(e -> {
 			if (point1.contains(e.getX(), e.getY())) {
 				if(circle.contains(e.getX(),e.getY()))
 				{
+					//move the point to mouse
 					point1.setCenterX(e.getX());
 					point1.setCenterY(e.getY());
+					//call functions to fix lines and calculate new angles
 					fixLines();
 					setAng();
 				}
 			}
 		});
 		
+		//If point b is moved
 		point2.setOnMouseDragged(e -> {
 			if (point2.contains(e.getX(), e.getY())) {
 				if(circle.contains(e.getX(),e.getY()))
 				{
+					//move the point to mouse
 					point2.setCenterX(e.getX());
 					point2.setCenterY(e.getY());
+					//call functions to fix lines and calculate new angles
 					fixLines();
 					setAng();
 				}
 			}
 		});
-		
+		//If point c is moved
 		point3.setOnMouseDragged(e -> {
 			if (point3.contains(e.getX(), e.getY())) {
 				if(circle.contains(e.getX(),e.getY()))
 				{
+					//move the point to mouse
 					point3.setCenterX(e.getX());
 					point3.setCenterY(e.getY());
+					//call functions to fix lines and calculate new angles
 					fixLines();
 					setAng();
 				}
@@ -93,8 +104,11 @@ public class Main extends Application {
 		});
 	}
 	
+	
+	//This function will reset the lines that makeup the triangle if called
 	private void fixLines()
 	{
+		//set points for start and end of first line
 		a.setStartX(point1.getCenterX());
 		a.setStartY(point1.getCenterY());
 		a.setEndX(point2.getCenterX());
@@ -102,6 +116,7 @@ public class Main extends Application {
 		linA.setX((point1.getCenterX()+point2.getCenterX())/2);
 	    linA.setY((point1.getCenterY()+point2.getCenterY())/2);
 		
+	    //set points for start and end of second line
 		b.setStartX(point2.getCenterX());
 		b.setStartY(point2.getCenterY());
 		b.setEndX(point3.getCenterX());
@@ -109,6 +124,7 @@ public class Main extends Application {
 		linB.setX((point2.getCenterX()+point3.getCenterX())/2);
 	    linB.setY((point2.getCenterY()+point3.getCenterY())/2);
 		
+	    //set points for start and end of third line
 		c.setStartX(point3.getCenterX());
 		c.setStartY(point3.getCenterY());
 		c.setEndX(point1.getCenterX());
@@ -117,26 +133,32 @@ public class Main extends Application {
 	    linC.setY((point1.getCenterY()+point3.getCenterY())/2);
 	}
 	
+	//This function generates and returns a random double
 	private double genDoub()
 	{
 		Random r = new Random();
 		return(2*Math.PI * r.nextDouble());
 	}
 	
+	//This function calculates an displays the angles for alll three points
 	private void setAng()
 	{
+		//Calculate lengths
 		double aLen = Math.sqrt(Math.pow((point2.getCenterY()-point1.getCenterY()),2)+Math.pow((point2.getCenterX()-point1.getCenterX()),2));
 		double bLen = Math.sqrt(Math.pow((point3.getCenterY()-point2.getCenterY()),2)+Math.pow((point3.getCenterX()-point2.getCenterX()),2));
 		double cLen = Math.sqrt(Math.pow((point1.getCenterY()-point3.getCenterY()),2)+Math.pow((point1.getCenterX()-point3.getCenterX()),2));
 		
+		//Display lengths
 		linA.setText("a = "+Double.toString(aLen).substring(0,3));
 		linB.setText("b = "+Double.toString(bLen).substring(0,3));
 		linC.setText("c = "+Double.toString(cLen).substring(0,3));
 		
+		//Calculate angles
 		double ang1 = Math.acos((aLen*aLen-bLen*bLen-cLen*cLen) / (-2*bLen*cLen));
 		double ang2 = Math.acos((bLen*bLen-aLen*aLen-cLen*cLen) / (-2*aLen*cLen));
 		double ang3 = Math.acos((cLen*cLen-bLen*bLen-aLen*aLen) / (-2*aLen*bLen));
 		
+		//Display angles
 		angA.setText(Double.toString(ang1*(180/Math.PI)).substring(0,5));
 		angB.setText(Double.toString(ang2*(180/Math.PI)).substring(0,5));
 		angC.setText(Double.toString(ang3*(180/Math.PI)).substring(0,5));

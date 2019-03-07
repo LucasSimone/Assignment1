@@ -1,5 +1,6 @@
 package application;
-	
+
+//Imports
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import javafx.scene.chart.NumberAxis;
 
 
 public class Main extends Application {
+	//variable decleration
 	BarChart<String,Number> barChart;
 	TextField filename;
 	@Override
@@ -58,20 +60,28 @@ public class Main extends Application {
         primaryStage.setWidth(600);
         primaryStage.show(); 
 	    
+        //If the button is clicked
         view.setOnAction(e-> 
         {
+        	//call histo function
         	histo();
         });
 
+        //If the enter key is pressed
         filename.setOnKeyPressed(e-> {
         	if (e.getCode() == KeyCode.ENTER)  
         	{
+        		//call histo function
         		histo();
             }
         });
 	    
 	}
 	
+	//This function takes each char from the file one at a time and 
+	//counts each occurrence of a letter by storing the result in a 
+	//integer array. The information is then stored in a series which 
+	//is displayed on a barchart.
 	private void histo()
 	{
 		java.io.File file = new java.io.File(filename.getText());
@@ -80,6 +90,7 @@ public class Main extends Application {
 	    	int[] alpha = new int[26];
 	    	while(input.hasNext())
 	    	{
+	    		//Count each letter
 	    		String word = input.next();
 	    		for(int i = 0;i<word.length();i++)
 	    		{
@@ -89,11 +100,12 @@ public class Main extends Application {
 	    	input.close();
 	    	XYChart.Series<String,Number> chars = new XYChart.Series<>();
 	    	chars.setName("Letter Frequency");
+	    	//Add data to series
 	    	for(int i = 0;i<26;i++)
 	    	{
 	    		chars.getData().add(new XYChart.Data<String,Number>(Character.toString((char)(i+97)),alpha[i]));
 	    	}
-	    	
+	    	//Display the histogram
 	    	barChart.getData().addAll(chars);
     	} catch(Exception e1) {}
 	}
